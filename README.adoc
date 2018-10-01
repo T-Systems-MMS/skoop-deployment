@@ -1,0 +1,30 @@
+= MySkills Deployment
+Georg Wittberger <georg.wittberger@gmail.com>
+v0.0.1, 2018-10-01
+
+This project provides templates for deployments of the MySkills application.
+
+== Using Docker Compose
+
+The subdirectory `docker-compose` contains templates to deploy MySkills using Docker Compose. This is an ideal solution for local development and testing environments. It is not recommended for production use!
+
+== Configuring authentication using KeyCloak
+
+. Install the KeyCloak server.
+. Log in to the administration console.
+. Create a new realm named `MySkills`.
+. Create a new client within the `MySkills` realm:
+  * Client ID: `myskills`
+  * Client Protocol: `openid-connect`
+  * Root URL: (Base URL where MySkills WebApp is hosted), e.g. `http://localhost:4200`
+. Configure the client settings:
+  * Access Type: `public`
+  * Standard Flow Enabled: `off`
+  * Implicit Flow Enabled: `on`
+  * Valid Redirect URIs:
+  ** `/`
+  ** `/index.html`
+  ** `/silent-refresh.html`
+. Configure the mappers of the client scope `profile`:
+  * For the mapper `username` set the Token Claim Name to `user_name`
+. Configure users and groups as needed.

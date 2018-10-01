@@ -1,0 +1,45 @@
+version: '3.4'
+
+services:
+  webapp:
+    image: 'myskills/webapp:latest'
+    environment:
+      SERVER_NAME: '${WEB_DOMAIN}'
+      MYSKILLS_SERVER_BASE_URL: 'http://server:8080'
+      MYSKILLS_CONFIG_AUTHENTICATION_ISSUER: 'http://${WEB_DOMAIN}:9000/auth/realms/MySkills'
+    ports:
+      - 80
+    restart: always
+  server:
+    image: 'myskills/server:latest'
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      SPRING_DATA_NEO4J_URI: 'bolt://database:7687'
+      SPRING_DATA_NEO4J_USERNAME: myskills
+      SPRING_DATA_NEO4J_PASSWORD: topsecret
+      SECURITY_OAUTH2_RESOURCE_JWK_KEYSETURI: 'http://keycloak:8080/auth/realms/MySkills/protocol/openid-connect/certs'
+    depends_on:
+      - database
+      - keycloak
+    restart: always
+  database:
+    image: 'neo4j:3.4'
+    environment:
+      NEO4J_AUTH: myskills/topsecret
+    volumes:
+      - 'server-data:/data'
+    restart: always
+  keycloak:
+    image: 'jboss/keycloak:4.5.0.Final'
+    environment:
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: admin
+    volumes:
+      - 'keycloak-data:/opt/jboss/keycloak/standalone/data'
+    ports:
+      - '9000:8080'
+    restart: always
+
+volumes:
+  server-data:
+  keycloak-data:
