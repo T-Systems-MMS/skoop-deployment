@@ -23,7 +23,7 @@ IMPORTANT: We do not publish Docker images so far. This deployment assumes that 
 . Set the environment variable `SERVER_DOMAIN` to the web domain where the MySkills WebApp will be hosted. For example: `SERVER_DOMAIN=myskills.your-domain.com`
 . Set the environment variable `SERVER_ADMIN` to the admin's e-mail address. For example: `SERVER_ADMIN=admin@your-domain.com`
 . Run the command to start or update the containers: `docker-compose -p myskills up -d`
-. Verify the container state: `docker-compose ps`
+. Verify the container state: `docker-compose -p myskills ps`
 
 === Deployment from sources
 
