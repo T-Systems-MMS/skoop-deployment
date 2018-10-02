@@ -46,6 +46,7 @@ Coming soon
   ** `/`
   ** `/index.html`
   ** `/silent-refresh.html`
+  * Web Origins: (Base URL where the MySkills WebApp is hosted), e.g. `http://myskills.your-domain.com`
 . Configure the mappers of the client scope `profile`:
   * For the mapper `username` set the Token Claim Name to `user_name`
 . Configure users and groups as needed.
