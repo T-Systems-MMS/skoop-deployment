@@ -20,7 +20,7 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: prod
       SPRING_DATA_NEO4J_URI: 'bolt://database:7687'
-      SPRING_DATA_NEO4J_USERNAME: myskills
+      SPRING_DATA_NEO4J_USERNAME: neo4j
       SPRING_DATA_NEO4J_PASSWORD: topsecret
       SECURITY_OAUTH2_RESOURCE_JWK_KEYSETURI: 'http://keycloak:8080/auth/realms/MySkills/protocol/openid-connect/certs'
     depends_on:
@@ -32,7 +32,7 @@ services:
   database:
     image: 'neo4j:3.4'
     environment:
-      NEO4J_AUTH: myskills/topsecret
+      NEO4J_AUTH: neo4j/topsecret
     volumes:
       - 'server-data:/data'
     restart: always
