@@ -1,15 +1,20 @@
 version: '3.4'
 
 services:
+  # MySkills WebApp
   webapp:
     image: 'myskills/webapp:latest'
     environment:
-      SERVER_NAME: '${WEB_DOMAIN}'
-      MYSKILLS_SERVER_BASE_URL: 'http://server:8080'
-      MYSKILLS_CONFIG_AUTHENTICATION_ISSUER: 'http://${WEB_DOMAIN}:9000/auth/realms/MySkills'
+      SERVER_NAME: '${SERVER_DOMAIN:-localhost}'
+      SERVER_ADMIN: '${SERVER_ADMIN:-anonymous@nothing.com}'
+      MYSKILLS_SERVER_URL: 'http://server:8080'
+      MYSKILLS_WEBAPP_AUTHENTICATION_ISSUER: 'http://${SERVER_DOMAIN}:9000/auth/realms/MySkills'
+      MYSKILLS_WEBAPP_AUTHENTICATION_INSECURE: 'true'
     ports:
-      - 80
+      - '80'
     restart: always
+
+  # MySkills Server
   server:
     image: 'myskills/server:latest'
     environment:
@@ -22,6 +27,8 @@ services:
       - database
       - keycloak
     restart: always
+
+  # Neo4j database for MySkills Server
   database:
     image: 'neo4j:3.4'
     environment:
@@ -29,6 +36,8 @@ services:
     volumes:
       - 'server-data:/data'
     restart: always
+
+  # KeyCloak server for authentication
   keycloak:
     image: 'jboss/keycloak:4.5.0.Final'
     environment:

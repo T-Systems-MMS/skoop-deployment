@@ -1,12 +1,33 @@
 = MySkills Deployment
 Georg Wittberger <georg.wittberger@gmail.com>
-v0.0.1, 2018-10-01
+v0.0.1, 2018-10-02
 
 This project provides templates for deployments of the MySkills application.
 
 == Using Docker Compose
 
-The subdirectory `docker-compose` contains templates to deploy MySkills using Docker Compose. This is an ideal solution for local development and testing environments. It is not recommended for production use!
+The subdirectory `docker-compose` contains a template to deploy MySkills using Docker Compose. This is an ideal solution for local development and testing environments. *It is NOT recommended for production use!*
+
+=== Prerequisites
+
+* Docker 17.06.0 (or higher)
+* Docker Compose 1.17.0 (or higher)
+* Git Client
+
+=== Deployment with pre-built images
+
+IMPORTANT: We do not publish Docker images so far. This deployment assumes that you have pre-built the images `myskills/webapp:latest` and `myskills/server:latest` on the Docker daemon which will run the containers!
+
+. Clone this Git repository.
+. Open a terminal in the subdirectory `docker-compose`.
+. Set the environment variable `SERVER_DOMAIN` to the web domain where the MySkills WebApp will be hosted. For example: `SERVER_DOMAIN=myskills.your-domain.com`
+. Set the environment variable `SERVER_ADMIN` to the admin's e-mail address. For example: `SERVER_ADMIN=admin@your-domain.com`
+. Run the command to start or update the containers: `docker-compose up -d`
+. Verify the container state: `docker-compose ps`
+
+=== Deployment from sources
+
+Coming soon
 
 == Configuring authentication using KeyCloak
 
@@ -16,7 +37,7 @@ The subdirectory `docker-compose` contains templates to deploy MySkills using Do
 . Create a new client within the `MySkills` realm:
   * Client ID: `myskills`
   * Client Protocol: `openid-connect`
-  * Root URL: (Base URL where MySkills WebApp is hosted), e.g. `http://localhost:4200`
+  * Root URL: (Base URL where the MySkills WebApp is hosted), e.g. `http://myskills.your-domain.com`
 . Configure the client settings:
   * Access Type: `public`
   * Standard Flow Enabled: `off`
