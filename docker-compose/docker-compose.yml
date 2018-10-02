@@ -11,7 +11,7 @@ services:
       MYSKILLS_WEBAPP_AUTHENTICATION_ISSUER: 'http://${SERVER_DOMAIN}:9000/auth/realms/MySkills'
       MYSKILLS_WEBAPP_AUTHENTICATION_INSECURE: 'true'
     ports:
-      - '80'
+      - '80:80'
     restart: always
 
   # MySkills Server
