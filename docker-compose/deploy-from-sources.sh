@@ -30,6 +30,7 @@ else
 fi
 
 # Build MySkills Server from sources.
+echo "Building MySkills Server..."
 docker run \
   --rm \
   -v "$PWD":/usr/src/myskills-server \
@@ -79,6 +80,7 @@ else
 fi
 
 # Build MySkills WebApp from sources.
+echo "Building MySkills WebApp..."
 docker run \
   --rm \
   -v "$PWD":/usr/src/myskills-webapp \
