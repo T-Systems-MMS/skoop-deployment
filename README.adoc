@@ -16,14 +16,16 @@ The subdirectory `docker-compose` contains a template to deploy MySkills using D
 
 === Deployment with pre-built images
 
-IMPORTANT: We do not publish Docker images so far. This deployment assumes that you have pre-built the images `myskills/webapp:latest` and `myskills/server:latest` on the Docker daemon which will run the containers!
+IMPORTANT: We do not publish Docker images so far. This deployment approach assumes that you have pre-built the images `myskills/webapp:latest` and `myskills/server:latest` on the Docker daemon which will run the containers!
 
 . Clone this Git repository.
 . Open a terminal in the subdirectory `docker-compose`.
-. Export the environment variable `SERVER_DOMAIN` to the web domain where the MySkills WebApp will be hosted. For example: `SERVER_DOMAIN=myskills.your-domain.com`
-. Export the environment variable `SERVER_ADMIN` to the admin's e-mail address. For example: `SERVER_ADMIN=admin@your-domain.com`
+. Export the environment variable `SERVER_DOMAIN` to define the web domain where the MySkills WebApp will be hosted. For example: `SERVER_DOMAIN=myskills.your-domain.com`. Default is `localhost`.
+. Export the environment variable `SERVER_ADMIN` to define the admin's e-mail address (just for internal configuration). For example: `SERVER_ADMIN=admin@your-domain.com`. Default is `anonymous@nothing.com`.
 . Start the deployment: `docker-compose -p myskills up -d`
 . Verify the container state: `docker-compose -p myskills ps`
+. Configure the KeyCloak realm after the first deployment. Go to http://myskills.your-domain.com:9000/auth and follow the instructions in the section <<Configuring authentication using KeyCloak>>.
+. Visit http://myskills.your-domain.com/ to view the MySkills WebApp.
 
 === Deployment from sources
 
@@ -31,19 +33,19 @@ The MySkills Server and WebApp can be deployed directly from sources using the b
 
 . Clone this Git repository.
 . Open a terminal in the subdirectory `docker-compose`.
-. Export the environment variable `SERVER_DOMAIN` to the web domain where the MySkills WebApp will be hosted. For example: `SERVER_DOMAIN=myskills.your-domain.com`
-. Export the environment variable `SERVER_ADMIN` to the admin's e-mail address. For example: `SERVER_ADMIN=admin@your-domain.com`
-. Optionally export the environment variable `BUILD_CONTEXT_DIR` to the directory where the sources and build caches should be stored. Default is `$HOME/myskills`.
+. Export the environment variable `SERVER_DOMAIN` to define the web domain where the MySkills WebApp will be hosted. For example: `SERVER_DOMAIN=myskills.your-domain.com`. Default is `localhost`.
+. Export the environment variable `SERVER_ADMIN` to define the admin's e-mail address (just for internal configuration). For example: `SERVER_ADMIN=admin@your-domain.com`. Default is `anonymous@nothing.com`.
+. Optionally export the environment variable `BUILD_CONTEXT_DIR` to define the directory where the sources and build caches should be stored. Default is `$HOME/myskills`.
 . Optionally export the environment variables `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY` if HTTP connections to the internet must be established via a proxy server. For example: `HTTP_PROXY=http://proxy.company.com:8080 ; NO_PROXY=localhost,127.0.0.1`
 . Start the deployment: `./deploy-from-sources.sh`
 . Verify the container state: `docker-compose -p myskills ps`
-
-TIP: After the first deployment you must to configure the `MySkills` realm in the KeyCloak server. Go to http://myskills.your-domain.com:9000/auth and follow the steps described in the section <<Configuring authentication using KeyCloak>>.
+. Configure the KeyCloak realm after the first deployment. Go to http://myskills.your-domain.com:9000/auth and follow the instructions in the section <<Configuring authentication using KeyCloak>>.
+. Visit http://myskills.your-domain.com/ to view the MySkills WebApp.
 
 == Configuring authentication using KeyCloak
 
 . Install the KeyCloak server.
-. Log in to the administration console.
+. Log in to the KeyCloak administration console.
 . Create a new realm named `MySkills`.
 . Create a new client within the `MySkills` realm:
   * Client ID: `myskills`
