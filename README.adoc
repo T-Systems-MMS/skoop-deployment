@@ -1,12 +1,12 @@
 = MySkills Deployment
 Georg Wittberger <georg.wittberger@gmail.com>
-v0.0.1, 2018-10-02
+v0.0.1, 2018-10-03
 
-This project provides templates for deployments of the MySkills application.
+This repository provides templates for different kinds of deployments of the MySkills application.
 
 == Using Docker Compose
 
-The subdirectory `docker-compose` contains a template to deploy MySkills using Docker Compose. This is an ideal solution for local development and testing environments. *It is NOT recommended for production use!*
+The subdirectory `docker-compose` contains a template to deploy MySkills using Docker Compose. This is an ideal solution for local development and testing environments. *It is NOT recommended for production!*
 
 === Prerequisites
 
@@ -20,24 +20,25 @@ IMPORTANT: We do not publish Docker images so far. This deployment assumes that 
 
 . Clone this Git repository.
 . Open a terminal in the subdirectory `docker-compose`.
-. Set the environment variable `SERVER_DOMAIN` to the web domain where the MySkills WebApp will be hosted. For example: `SERVER_DOMAIN=myskills.your-domain.com`
-. Set the environment variable `SERVER_ADMIN` to the admin's e-mail address. For example: `SERVER_ADMIN=admin@your-domain.com`
+. Export the environment variable `SERVER_DOMAIN` to the web domain where the MySkills WebApp will be hosted. For example: `SERVER_DOMAIN=myskills.your-domain.com`
+. Export the environment variable `SERVER_ADMIN` to the admin's e-mail address. For example: `SERVER_ADMIN=admin@your-domain.com`
 . Start the deployment: `docker-compose -p myskills up -d`
 . Verify the container state: `docker-compose -p myskills ps`
 
 === Deployment from sources
 
-The MySkills Server and WebApp can be deployed directly from sources using the bash script `deploy-from-sources.sh`. The script fetches the sources from GitHub, compiles the applications and builds their Docker images. Then it starts the Docker Compose deployment like described above.
+The MySkills Server and WebApp can be deployed directly from sources using the bash script `deploy-from-sources.sh`. The script fetches the sources from GitHub, compiles the applications and builds their Docker images. Then it starts the Docker Compose deployment as described above.
 
 . Clone this Git repository.
 . Open a terminal in the subdirectory `docker-compose`.
-. Set the environment variable `SERVER_DOMAIN` to the web domain where the MySkills WebApp will be hosted. For example: `SERVER_DOMAIN=myskills.your-domain.com`
-. Set the environment variable `SERVER_ADMIN` to the admin's e-mail address. For example: `SERVER_ADMIN=admin@your-domain.com`
-. Optionally set the environment variable `BUILD_CONTEXT_DIR` to the directory where the sources and build caches should be stored. Default is `$HOME/myskills`.
+. Export the environment variable `SERVER_DOMAIN` to the web domain where the MySkills WebApp will be hosted. For example: `SERVER_DOMAIN=myskills.your-domain.com`
+. Export the environment variable `SERVER_ADMIN` to the admin's e-mail address. For example: `SERVER_ADMIN=admin@your-domain.com`
+. Optionally export the environment variable `BUILD_CONTEXT_DIR` to the directory where the sources and build caches should be stored. Default is `$HOME/myskills`.
+. Optionally export the environment variables `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY` if HTTP connections to the internet must be established via a proxy server. For example: `HTTP_PROXY=http://proxy.company.com:8080 ; NO_PROXY=localhost,127.0.0.1`
 . Start the deployment: `./deploy-from-sources.sh`
 . Verify the container state: `docker-compose -p myskills ps`
 
-TIP: After the first deployment you must to configure the `MySkills` realm in the KeyCloak server. Go to http://<your-domain>:9000/auth and follow the steps described in the section <<Configuring authentication using KeyCloak>>.
+TIP: After the first deployment you must to configure the `MySkills` realm in the KeyCloak server. Go to http://myskills.your-domain.com:9000/auth and follow the steps described in the section <<Configuring authentication using KeyCloak>>.
 
 == Configuring authentication using KeyCloak
 
@@ -60,3 +61,7 @@ TIP: After the first deployment you must to configure the `MySkills` realm in th
 . Configure the mappers of the client scope `profile`:
   * For the mapper `username` set the Token Claim Name to `user_name`
 . Configure users and groups as needed.
+
+== License
+
+https://opensource.org/licenses/MIT[MIT]
