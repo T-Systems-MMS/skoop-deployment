@@ -37,6 +37,9 @@ docker run \
   -v "$GRADLE_HOME":/root/.gradle \
   -v "$M2_HOME":/root/.m2 \
   -w /usr/src/myskills-server \
+  -e "HTTP_PROXY=$HTTP_PROXY" \
+  -e "HTTPS_PROXY=$HTTPS_PROXY" \
+  -e "NO_PROXY=$NO_PROXY" \
   openjdk:10 \
   ./gradlew clean build
 
@@ -85,6 +88,9 @@ docker run \
   --rm \
   -v "$PWD":/usr/src/myskills-webapp \
   -w /usr/src/myskills-webapp \
+  -e "HTTP_PROXY=$HTTP_PROXY" \
+  -e "HTTPS_PROXY=$HTTPS_PROXY" \
+  -e "NO_PROXY=$NO_PROXY" \
   node:10 \
   /bin/bash -c "npm install && npm run build"
 
