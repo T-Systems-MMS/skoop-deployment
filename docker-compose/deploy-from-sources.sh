@@ -1,24 +1,9 @@
 #!/usr/bin/env bash
 
-# Set default build context if not given in environment.
+# Set default build context if not set as environment variable.
 if [ -z "$BUILD_CONTEXT_DIR" ]; then
   BUILD_CONTEXT_DIR="$HOME/myskills"
 fi
-
-# Prepare proxy settings given in environment.
-if [[ $HTTP_PROXY =~ (.+)://(.+):(.+) ]]; then
-  HTTP_PROXY_SCHEMA=${BASH_REMATCH[1]}
-  HTTP_PROXY_HOST=${BASH_REMATCH[2]}
-  HTTP_PROXY_PORT=${BASH_REMATCH[3]}
-  echo "HTTP proxy settings: Schema=$HTTP_PROXY_SCHEMA , Host=$HTTP_PROXY_HOST , Port=$HTTP_PROXY_PORT"
-fi
-if [[ $HTTPS_PROXY =~ (.+)://(.+):(.+) ]]; then
-  HTTPS_PROXY_SCHEMA=${BASH_REMATCH[1]}
-  HTTPS_PROXY_HOST=${BASH_REMATCH[2]}
-  HTTPS_PROXY_PORT=${BASH_REMATCH[3]}
-  echo "HTTPS proxy settings: Schema=$HTTPS_PROXY_SCHEMA , Host=$HTTPS_PROXY_HOST , Port=$HTTPS_PROXY_PORT"
-fi
-NO_PROXY_JAVA=$(echo $NO_PROXY | tr , '|')
 
 # Prepare variables for build context directories.
 MYSKILLS_SERVER_DIR="$BUILD_CONTEXT_DIR/myskills-server"
@@ -29,6 +14,31 @@ echo "Server repository directory: $MYSKILLS_SERVER_DIR"
 echo "WebApp repository directory: $MYSKILLS_WEBAPP_DIR"
 echo "Gradle home directory: $GRADLE_HOME"
 echo "Maven home directory: $M2_HOME"
+
+# Prepare Gradle proxy settings given as environment variables.
+if [ ! -z "$HTTP_PROXY" ] || [ ! -z "$HTTPS_PROXY" ]; then
+  echo "Proxy settings found. Generating Gradle proxy configuration..."
+  mkdir -p "$GRADLE_HOME"
+  GRADLE_PROPERTIES="$GRADLE_HOME/gradle.properties"
+  echo "# Generated proxy configuration" > "$GRADLE_PROPERTIES"
+
+  NO_PROXY_JAVA=$(echo $NO_PROXY | tr , '|')
+  if [[ $HTTP_PROXY =~ (.+)://(.+):(.+) ]]; then
+    echo "systemProp.http.proxyHost=${BASH_REMATCH[2]}" >> "$GRADLE_PROPERTIES"
+    echo "systemProp.http.proxyPort=${BASH_REMATCH[3]}" >> "$GRADLE_PROPERTIES"
+    echo "systemProp.http.nonProxyHosts=$NO_PROXY_JAVA" >> "$GRADLE_PROPERTIES"
+  fi
+
+  if [[ $HTTPS_PROXY =~ (.+)://(.+):(.+) ]]; then
+    echo "systemProp.https.proxyHost=${BASH_REMATCH[2]}" >> "$GRADLE_PROPERTIES"
+    echo "systemProp.https.proxyPort=${BASH_REMATCH[3]}" >> "$GRADLE_PROPERTIES"
+    echo "systemProp.https.nonProxyHosts=$NO_PROXY_JAVA" >> "$GRADLE_PROPERTIES"
+  fi
+
+  echo "Gradle proxy configuration written to $GRADLE_PROPERTIES"
+fi
+
+# ----
 
 # Clone or update the MySkills Server sources from GitHub.
 if [ -d "$MYSKILLS_SERVER_DIR" ]; then
@@ -57,14 +67,7 @@ docker run \
   -e "HTTPS_PROXY=$HTTPS_PROXY" \
   -e "NO_PROXY=$NO_PROXY" \
   openjdk:10 \
-  ./gradlew \
-  -Dhttp.proxyHost=$HTTP_PROXY_HOST \
-  -Dhttp.proxyPort=$HTTP_PROXY_PORT \
-  -Dhttp.nonProxyHosts=$NO_PROXY_JAVA \
-  -Dhttps.proxyHost=$HTTPS_PROXY_HOST \
-  -Dhttps.proxyPort=$HTTPS_PROXY_PORT \
-  -Dhttps.nonProxyHosts=$NO_PROXY_JAVA \
-  clean build
+  ./gradlew clean build
 
 if [ "$?" -ne "0" ]; then
   echo "ERROR: Sources of MySkills Server could not be compiled!"
