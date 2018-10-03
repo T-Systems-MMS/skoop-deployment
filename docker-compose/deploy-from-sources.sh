@@ -1,8 +1,24 @@
 #!/usr/bin/env bash
 
+# Set default build context if not given in environment.
 if [ -z "$BUILD_CONTEXT_DIR" ]; then
   BUILD_CONTEXT_DIR="$HOME/myskills"
 fi
+
+# Prepare proxy settings given in environment.
+if [[ $HTTP_PROXY =~ (.+)://(.+):(.+) ]]; then
+  HTTP_PROXY_SCHEMA=${BASH_REMATCH[1]}
+  HTTP_PROXY_HOST=${BASH_REMATCH[2]}
+  HTTP_PROXY_PORT=${BASH_REMATCH[3]}
+  echo "HTTP proxy settings: Schema=$HTTP_PROXY_SCHEMA , Host=$HTTP_PROXY_HOST , Port=$HTTP_PROXY_PORT"
+fi
+if [[ $HTTPS_PROXY =~ (.+)://(.+):(.+) ]]; then
+  HTTPS_PROXY_SCHEMA=${BASH_REMATCH[1]}
+  HTTPS_PROXY_HOST=${BASH_REMATCH[2]}
+  HTTPS_PROXY_PORT=${BASH_REMATCH[3]}
+  echo "HTTPS proxy settings: Schema=$HTTPS_PROXY_SCHEMA , Host=$HTTPS_PROXY_HOST , Port=$HTTPS_PROXY_PORT"
+fi
+NO_PROXY_JAVA=$(echo $NO_PROXY | tr , '|')
 
 # Prepare variables for build context directories.
 MYSKILLS_SERVER_DIR="$BUILD_CONTEXT_DIR/myskills-server"
@@ -41,7 +57,14 @@ docker run \
   -e "HTTPS_PROXY=$HTTPS_PROXY" \
   -e "NO_PROXY=$NO_PROXY" \
   openjdk:10 \
-  ./gradlew clean build
+  ./gradlew \
+  -Dhttp.proxyHost=$HTTP_PROXY_HOST \
+  -Dhttp.proxyPort=$HTTP_PROXY_PORT \
+  -Dhttp.nonProxyHosts=$NO_PROXY_JAVA \
+  -Dhttps.proxyHost=$HTTPS_PROXY_HOST \
+  -Dhttps.proxyPort=$HTTPS_PROXY_PORT \
+  -Dhttps.nonProxyHosts=$NO_PROXY_JAVA \
+  clean build
 
 if [ "$?" -ne "0" ]; then
   echo "ERROR: Sources of MySkills Server could not be compiled!"
