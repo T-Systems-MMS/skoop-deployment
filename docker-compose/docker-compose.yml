@@ -21,6 +21,7 @@ services:
       SPRING_DATA_NEO4J_URI: 'bolt://database:7687'
       SPRING_DATA_NEO4J_USERNAME: neo4j
       SPRING_DATA_NEO4J_PASSWORD: topsecret
+      SPRING_DATA_NEO4J_AUTOINDEX: assert
       SECURITY_OAUTH2_RESOURCE_JWK_KEYSETURI: 'http://keycloak:8080/auth/realms/MySkills/protocol/openid-connect/certs'
     depends_on:
       - database
