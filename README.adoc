@@ -1,6 +1,6 @@
 = MySkills Deployment
 Georg Wittberger <georg.wittberger@gmail.com>
-v0.0.1, 2018-10-03
+v0.0.1, 2018-12-20
 
 This repository provides templates for different kinds of deployments of the MySkills application.
 
@@ -37,6 +37,7 @@ The MySkills Server and WebApp can be deployed directly from sources using the b
 . Export the environment variable `SERVER_ADMIN` to define the admin's e-mail address (just for internal configuration). For example: `SERVER_ADMIN=admin@your-domain.com`. Default is `anonymous@nothing.com`.
 . Optionally export the environment variable `BUILD_CONTEXT_DIR` to define the directory where the sources and build caches should be stored. Default is `$HOME/myskills`.
 . Optionally export the environment variables `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY` if HTTP connections to the internet must be established via a proxy server. For example: `HTTP_PROXY=http://proxy.company.com:8080 ; NO_PROXY=localhost,127.0.0.1`
+. Optionally create a Maven configuration file `settings.xml` inside the `BUILD_CONTEXT_DIR/.m2` directory to customize Maven settings. This is important if Maven must use a proxy server to download dependencies.
 . Start the deployment: `./deploy-from-sources.sh`
 . Verify the container state: `docker-compose -p myskills ps`
 . Configure the KeyCloak realm after the first deployment. Go to http://myskills.your-domain.com:9000/auth and follow the instructions in the section <<Configuring authentication using KeyCloak>>.

@@ -8,34 +8,14 @@ fi
 # Prepare variables for build context directories.
 MYSKILLS_SERVER_DIR="$BUILD_CONTEXT_DIR/myskills-server"
 MYSKILLS_WEBAPP_DIR="$BUILD_CONTEXT_DIR/myskills-webapp"
-GRADLE_HOME="$BUILD_CONTEXT_DIR/.gradle"
-M2_HOME="$BUILD_CONTEXT_DIR/.m2"
+MAVEN_CONFIG_DIR="$BUILD_CONTEXT_DIR/.m2"
 echo "Server repository directory: $MYSKILLS_SERVER_DIR"
 echo "WebApp repository directory: $MYSKILLS_WEBAPP_DIR"
-echo "Gradle home directory: $GRADLE_HOME"
-echo "Maven home directory: $M2_HOME"
+echo "Maven config directory: $MAVEN_CONFIG_DIR"
 
-# Prepare Gradle proxy settings given as environment variables.
-if [ ! -z "$HTTP_PROXY" ] || [ ! -z "$HTTPS_PROXY" ]; then
-  echo "Proxy settings found. Generating Gradle proxy configuration..."
-  mkdir -p "$GRADLE_HOME"
-  GRADLE_PROPERTIES="$GRADLE_HOME/gradle.properties"
-  echo "# Generated proxy configuration" > "$GRADLE_PROPERTIES"
-
-  NO_PROXY_JAVA=$(echo $NO_PROXY | tr , '|')
-  if [[ $HTTP_PROXY =~ (.+)://(.+):(.+) ]]; then
-    echo "systemProp.http.proxyHost=${BASH_REMATCH[2]}" >> "$GRADLE_PROPERTIES"
-    echo "systemProp.http.proxyPort=${BASH_REMATCH[3]}" >> "$GRADLE_PROPERTIES"
-    echo "systemProp.http.nonProxyHosts=$NO_PROXY_JAVA" >> "$GRADLE_PROPERTIES"
-  fi
-
-  if [[ $HTTPS_PROXY =~ (.+)://(.+):(.+) ]]; then
-    echo "systemProp.https.proxyHost=${BASH_REMATCH[2]}" >> "$GRADLE_PROPERTIES"
-    echo "systemProp.https.proxyPort=${BASH_REMATCH[3]}" >> "$GRADLE_PROPERTIES"
-    echo "systemProp.https.nonProxyHosts=$NO_PROXY_JAVA" >> "$GRADLE_PROPERTIES"
-  fi
-
-  echo "Gradle proxy configuration written to $GRADLE_PROPERTIES"
+if [[ ! -r "$MAVEN_CONFIG_DIR/settings.xml" ]]; then
+  echo "WARNING: No Maven settings found. Using default configuration."
+  echo "Create the file $MAVEN_CONFIG_DIR/settings.xml to customize settings."
 fi
 
 # ----
@@ -60,14 +40,13 @@ echo "Building MySkills Server..."
 docker run \
   --rm \
   -v "$PWD":/usr/src/myskills-server \
-  -v "$GRADLE_HOME":/root/.gradle \
-  -v "$M2_HOME":/root/.m2 \
+  -v "$MAVEN_CONFIG_DIR":/root/.m2 \
   -w /usr/src/myskills-server \
   -e "HTTP_PROXY=$HTTP_PROXY" \
   -e "HTTPS_PROXY=$HTTPS_PROXY" \
   -e "NO_PROXY=$NO_PROXY" \
-  openjdk:10 \
-  ./gradlew clean build
+  openjdk:11 \
+  ./mvnw clean package
 
 if [ "$?" -ne "0" ]; then
   echo "ERROR: Sources of MySkills Server could not be compiled!"
@@ -76,7 +55,7 @@ if [ "$?" -ne "0" ]; then
 fi
 
 # Build Docker image for MySkills Server using compiled JAR file.
-JAR_FILE=$(find ./build/libs -type f -iname "myskills-server-*.jar")
+JAR_FILE=$(find ./target -type f -iname "myskills-server-*.jar")
 docker build \
   -t myskills/server:latest \
   --build-arg JAR_FILE=$JAR_FILE \

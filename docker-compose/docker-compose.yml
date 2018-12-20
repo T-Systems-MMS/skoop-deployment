@@ -22,7 +22,7 @@ services:
       SPRING_DATA_NEO4J_USERNAME: neo4j
       SPRING_DATA_NEO4J_PASSWORD: topsecret
       SPRING_DATA_NEO4J_AUTOINDEX: assert
-      SECURITY_OAUTH2_RESOURCE_JWK_KEYSETURI: 'http://keycloak:8080/auth/realms/MySkills/protocol/openid-connect/certs'
+      SECURITY_OAUTH2_RESOURCESERVER_JWT_ISSUERURI: 'http://keycloak:8080/auth/realms/MySkills'
     depends_on:
       - database
       - keycloak
