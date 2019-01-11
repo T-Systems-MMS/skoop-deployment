@@ -42,6 +42,7 @@ docker run \
   -v "$PWD":/usr/src/myskills-server \
   -v "$MAVEN_CONFIG_DIR":/root/.m2 \
   -w /usr/src/myskills-server \
+  -e "MAVEN_OPTS=$MAVEN_OPTS" \
   -e "HTTP_PROXY=$HTTP_PROXY" \
   -e "HTTPS_PROXY=$HTTPS_PROXY" \
   -e "NO_PROXY=$NO_PROXY" \
