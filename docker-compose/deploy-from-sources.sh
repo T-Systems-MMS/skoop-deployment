@@ -127,4 +127,6 @@ if [ -z "$SERVER_DOMAIN" ]; then
 fi
 
 # docker-compose -p myskills up -d
+docker stack rm myskills
+sleep 30
 docker stack deploy --compose-file docker-compose.yml myskills
