@@ -1,12 +1,12 @@
-= MySkills Deployment
+= SKOOP Deployment
 Georg Wittberger <georg.wittberger@gmail.com>
 v0.0.1, 2018-12-20
 
-This repository provides templates for different kinds of deployments of the MySkills application.
+This repository provides templates for different kinds of deployments of the SKOOP application.
 
 == Using Docker Compose
 
-The subdirectory `docker-compose` contains a template to deploy MySkills using Docker Compose. This is an ideal solution for local development and testing environments. *It is NOT recommended for production!*
+The subdirectory `docker-compose` contains a template to deploy SKOOP using Docker Compose. This is an ideal solution for local development and testing environments. *It is NOT recommended for production!*
 
 === Prerequisites
 
@@ -20,28 +20,28 @@ IMPORTANT: We do not publish Docker images so far. This deployment approach assu
 
 . Clone this Git repository.
 . Open a terminal in the subdirectory `docker-compose`.
-. Export the environment variable `SERVER_DOMAIN` to define the web domain where the MySkills WebApp will be hosted. For example: `SERVER_DOMAIN=myskills.your-domain.com`. Default is `localhost`.
+. Export the environment variable `SERVER_DOMAIN` to define the web domain where the SKOOP WebApp will be hosted. For example: `SERVER_DOMAIN=skoop.your-domain.com`. Default is `localhost`.
 . Export the environment variable `SERVER_ADMIN` to define the admin's e-mail address (just for internal configuration). For example: `SERVER_ADMIN=admin@your-domain.com`. Default is `anonymous@nothing.com`.
 . Start the deployment: `docker-compose -p myskills up -d`
 . Verify the container state: `docker-compose -p myskills ps`
-. Configure the KeyCloak realm after the first deployment. Go to http://myskills.your-domain.com:9000/auth and follow the instructions in the section <<Configuring authentication using KeyCloak>>.
-. Visit http://myskills.your-domain.com/ to view the MySkills WebApp.
+. Configure the KeyCloak realm after the first deployment. Go to http://skoop.your-domain.com:9000/auth and follow the instructions in the section <<Configuring authentication using KeyCloak>>.
+. Visit http://skoop.your-domain.com/ to view the SKOOP WebApp.
 
 === Deployment from sources
 
-The MySkills Server and WebApp can be deployed directly from sources using the bash script `deploy-from-sources.sh`. The script fetches the sources from GitHub, compiles the applications and builds their Docker images. Then it starts the Docker Compose deployment as described above.
+The SKOOP Server and WebApp can be deployed directly from sources using the bash script `deploy-from-sources.sh`. The script fetches the sources from GitHub, compiles the applications and builds their Docker images. Then it starts the Docker Compose deployment as described above.
 
 . Clone this Git repository.
 . Open a terminal in the subdirectory `docker-compose`.
-. Export the environment variable `SERVER_DOMAIN` to define the web domain where the MySkills WebApp will be hosted. For example: `SERVER_DOMAIN=myskills.your-domain.com`. Default is `localhost`.
+. Export the environment variable `SERVER_DOMAIN` to define the web domain where the SKOOP WebApp will be hosted. For example: `SERVER_DOMAIN=skoop.your-domain.com`. Default is `localhost`.
 . Export the environment variable `SERVER_ADMIN` to define the admin's e-mail address (just for internal configuration). For example: `SERVER_ADMIN=admin@your-domain.com`. Default is `anonymous@nothing.com`.
 . Optionally export the environment variable `BUILD_CONTEXT_DIR` to define the directory where the sources and build caches should be stored. Default is `$HOME/myskills`.
 . Optionally export the environment variables `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY` if HTTP connections to the internet must be established via a proxy server. For example: `HTTP_PROXY=http://proxy.company.com:8080 ; NO_PROXY=localhost,127.0.0.1`
 . Optionally create a Maven configuration file `settings.xml` inside the `BUILD_CONTEXT_DIR/.m2` directory to customize Maven settings. This is important if Maven must use a proxy server to download dependencies.
 . Start the deployment: `./deploy-from-sources.sh`
 . Verify the container state: `docker-compose -p myskills ps`
-. Configure the KeyCloak realm after the first deployment. Go to http://myskills.your-domain.com:9000/auth and follow the instructions in the section <<Configuring authentication using KeyCloak>>.
-. Visit http://myskills.your-domain.com/ to view the MySkills WebApp.
+. Configure the KeyCloak realm after the first deployment. Go to http://skoop.your-domain.com:9000/auth and follow the instructions in the section <<Configuring authentication using KeyCloak>>.
+. Visit http://skoop.your-domain.com/ to view the SKOOP WebApp.
 
 == Configuring authentication using KeyCloak
 
@@ -51,7 +51,7 @@ The MySkills Server and WebApp can be deployed directly from sources using the b
 . Create a new client within the `MySkills` realm:
   * Client ID: `myskills`
   * Client Protocol: `openid-connect`
-  * Root URL: (Base URL where the MySkills WebApp is hosted), e.g. `http://myskills.your-domain.com`
+  * Root URL: (Base URL where the SKOOP WebApp is hosted), e.g. `http://skoop.your-domain.com`
 . Configure the client settings:
   * Access Type: `public`
   * Standard Flow Enabled: `off`
@@ -60,7 +60,7 @@ The MySkills Server and WebApp can be deployed directly from sources using the b
   ** `/`
   ** `/index.html`
   ** `/silent-refresh.html`
-  * Web Origins: (Base URL where the MySkills WebApp is hosted), e.g. `http://myskills.your-domain.com`
+  * Web Origins: (Base URL where the SKOOP WebApp is hosted), e.g. `http://skoop.your-domain.com`
 . Configure the mappers of the client scope `profile`:
   * For the mapper `username` set the Token Claim Name to `user_name`
 . Configure users and groups as needed.
