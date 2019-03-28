@@ -1,22 +1,22 @@
 version: '3.4'
 
 services:
-  # MySkills WebApp
+  # SKOOP WebApp
   webapp:
-    image: 'myskills/webapp:latest'
+    image: 'skoop/webapp:latest'
     environment:
       SERVER_NAME: '${SERVER_DOMAIN:-localhost}'
       SERVER_ADMIN: '${SERVER_ADMIN:-anonymous@nothing.com}'
-      MYSKILLS_SERVER_URL: 'http://server:8080'
-      MYSKILLS_WEBAPP_AUTHENTICATION_ISSUER: 'http://${SERVER_DOMAIN:-localhost}:9000/auth/realms/MySkills'
-      MYSKILLS_WEBAPP_AUTHENTICATION_INSECURE: 'true'
+      SKOOP_SERVER_URL: 'http://server:8080'
+      SKOOP_WEBAPP_AUTHENTICATION_ISSUER: 'http://${SERVER_DOMAIN:-localhost}:9000/auth/realms/MySkills'
+      SKOOP_WEBAPP_AUTHENTICATION_INSECURE: 'true'
     ports:
       - '80:80'
     restart: always
 
-  # MySkills Server
+  # SKOOP Server
   server:
-    image: 'myskills/server:latest'
+    image: 'skoop/server:latest'
     environment:
       SPRING_DATA_NEO4J_URI: 'bolt://database:7687'
       SPRING_DATA_NEO4J_USERNAME: neo4j
@@ -28,7 +28,7 @@ services:
       - keycloak
     restart: always
 
-  # Neo4j database for MySkills Server
+  # Neo4j database for SKOOP Server
   database:
     image: 'neo4j:3.4'
     environment:
