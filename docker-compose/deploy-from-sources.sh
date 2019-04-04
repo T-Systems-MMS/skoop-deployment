@@ -56,7 +56,7 @@ if [ "$?" -ne "0" ]; then
 fi
 
 # Build Docker image for SKOOP Server using compiled JAR file.
-JAR_FILE=$(find ./target -type f -iname "myskills-server-*.jar")
+JAR_FILE=$(find ./target -type f -iname "skoop-server-*.jar")
 docker build \
   -t skoop/server:latest \
   --build-arg JAR_FILE=$JAR_FILE \
