@@ -1,6 +1,6 @@
 = SKOOP Deployment
 Georg Wittberger <georg.wittberger@gmail.com>
-v0.0.1, 2018-12-20
+v0.0.1, 2019-04-14
 
 This repository provides templates for different kinds of deployments of the SKOOP application.
 
@@ -47,9 +47,9 @@ The SKOOP Server and WebApp can be deployed directly from sources using the bash
 
 . Install the KeyCloak server.
 . Log in to the KeyCloak administration console.
-. Create a new realm named `MySkills`.
-. Create a new client within the `MySkills` realm:
-  * Client ID: `myskills`
+. Create a new realm named `SKOOP`.
+. Create a new client within the `SKOOP` realm:
+  * Client ID: `skoop`
   * Client Protocol: `openid-connect`
   * Root URL: (Base URL where the SKOOP WebApp is hosted), e.g. `http://skoop.your-domain.com`
 . Configure the client settings:
