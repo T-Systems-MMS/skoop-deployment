@@ -35,7 +35,7 @@ services:
     image: 'neo4j:3.4'
     environment:
       NEO4J_AUTH: neo4j/topsecret
-      NEO4J_dbms_connector_bolt_thread__pool__min__size: 50
+      NEO4J_dbms_connector_bolt_thread__pool__min__size: 60
     volumes:
       - 'server-data:/data'
     restart: always
