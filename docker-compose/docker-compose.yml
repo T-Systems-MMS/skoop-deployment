@@ -24,6 +24,8 @@ services:
       SPRING_DATA_NEO4J_PASSWORD: topsecret
       SPRING_DATA_NEO4J_AUTOINDEX: assert
       LIQUIGRAPH_CHANGELOG: '${LIQUIGRAPH_CHANGELOG:-classpath:/db/liquigraph/changelog.xml}'
+      SMTP_SERVER_HOST: '${SMTP_SERVER_HOST:-localhost}'
+      SMTP_SERVER_PORT: '${SMTP_SERVER_PORT:-25}'
       SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: 'http://keycloak:8080/auth/realms/SKOOP/protocol/openid-connect/certs'
     depends_on:
       - database
