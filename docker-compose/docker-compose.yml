@@ -26,6 +26,7 @@ services:
       LIQUIGRAPH_CHANGELOG: '${LIQUIGRAPH_CHANGELOG:-classpath:/db/liquigraph/changelog.xml}'
       SMTP_SERVER_HOST: '${SMTP_SERVER_HOST:-localhost}'
       SMTP_SERVER_PORT: '${SMTP_SERVER_PORT:-25}'
+      SERVER_NAME: '${SERVER_DOMAIN:-localhost}'
       SECURITY_OAUTH2_RESOURCESERVER_JWT_JWKSETURI: 'http://keycloak:8080/auth/realms/SKOOP/protocol/openid-connect/certs'
     depends_on:
       - database
