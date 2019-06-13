@@ -14,15 +14,21 @@ The subdirectory `docker-compose` contains a template to deploy SKOOP using Dock
 * Docker Compose 1.17.0 (or higher)
 * Git Client
 
-=== Deployment with pre-built images
+=== Deployment with the images from Docker Hub
 
-IMPORTANT: We do not publish Docker images so far. This deployment approach assumes that you have pre-built the images `skoop/webapp:latest` and `skoop/server:latest` on the Docker daemon which will run the containers!
+We publish Docker images on [Docker Hub](https://hub.docker.com/):
+* [the server image](https://hub.docker.com/r/tsystemsmms/skoop-server)
+* [the webapp image](https://hub.docker.com/r/tsystemsmms/skoop-webapp)
 
 . Clone this Git repository.
 . Open a terminal in the subdirectory `docker-compose`.
 . Export the environment variable `SERVER_DOMAIN` to define the web domain where the SKOOP WebApp will be hosted. For example: `SERVER_DOMAIN=skoop.your-domain.com`. Default is `localhost`.
 . Export the environment variable `SERVER_ADMIN` to define the admin's e-mail address (just for internal configuration). For example: `SERVER_ADMIN=admin@your-domain.com`. Default is `anonymous@nothing.com`.
-. Start the deployment: `docker stack deploy --compose-file docker-compose.yml skoop`
+. Optionally export the environment variable `LIQUIGRAPH_CHANGELOG` to define the Liquigraph changelog to initialize the database. Default is `/db/liquigraph/changelog.xml`.
+. Optionally export the environment variable `SMTP_SERVER_HOST` to define the SMTP server to send e-mails with. Default is `localhost`.
+. Optionally export the environment variable `SMTP_SERVER_PORT` to define the SMTP port of the server to send e-mails with. Default is `25`.
+. (Conditional) Initialize a Docker swarm if you did not do this before: `docker swarm init`
+. Start the deployment: `./deploy.sh`
 . Verify the service state: `docker service ls -f name=skoop`
 . Configure the KeyCloak realm after the first deployment. Go to http://skoop.your-domain.com:9000/auth and follow the instructions in the section <<Configuring authentication using KeyCloak>>.
 . Visit http://skoop.your-domain.com/ to view the SKOOP WebApp.
@@ -35,9 +41,13 @@ The SKOOP Server and WebApp can be deployed directly from sources using the bash
 . Open a terminal in the subdirectory `docker-compose`.
 . Export the environment variable `SERVER_DOMAIN` to define the web domain where the SKOOP WebApp will be hosted. For example: `SERVER_DOMAIN=skoop.your-domain.com`. Default is `localhost`.
 . Export the environment variable `SERVER_ADMIN` to define the admin's e-mail address (just for internal configuration). For example: `SERVER_ADMIN=admin@your-domain.com`. Default is `anonymous@nothing.com`.
+. Optionally export the environment variable `LIQUIGRAPH_CHANGELOG` to define the Liquigraph changelog to initialize the database. Default is `/db/liquigraph/changelog.xml`.
+. Optionally export the environment variable `SMTP_SERVER_HOST` to define the SMTP server to send e-mails with. Default is `localhost`.
+. Optionally export the environment variable `SMTP_SERVER_PORT` to define the SMTP port of the server to send e-mails with. Default is `25`.
 . Optionally export the environment variable `BUILD_CONTEXT_DIR` to define the directory where the sources and build caches should be stored. Default is `$HOME/skoop`.
 . Optionally export the environment variables `HTTP_PROXY`, `HTTPS_PROXY` and `NO_PROXY` if HTTP connections to the internet must be established via a proxy server. For example: `HTTP_PROXY=http://proxy.company.com:8080 ; NO_PROXY=localhost,127.0.0.1`
 . Optionally create a Maven configuration file `settings.xml` inside the `BUILD_CONTEXT_DIR/.m2` directory to customize Maven settings. This is important if Maven must use a proxy server to download dependencies.
+. (Conditional) Initialize a Docker swarm if you did not do this before: `docker swarm init`
 . Start the deployment: `./deploy-from-sources.sh`
 . Verify the service state: `docker service ls -f name=skoop`
 . Configure the KeyCloak realm after the first deployment. Go to http://skoop.your-domain.com:9000/auth and follow the instructions in the section <<Configuring authentication using KeyCloak>>.
@@ -56,10 +66,7 @@ The SKOOP Server and WebApp can be deployed directly from sources using the bash
   * Access Type: `public`
   * Standard Flow Enabled: `off`
   * Implicit Flow Enabled: `on`
-  * Valid Redirect URIs:
-  ** `/`
-  ** `/index.html`
-  ** `/silent-refresh.html`
+  * Valid Redirect URI: `/*`
   * Web Origins: (Base URL where the SKOOP WebApp is hosted), e.g. `http://skoop.your-domain.com`
 . Configure the mappers of the client scope `profile`:
   * For the mapper `username` set the Token Claim Name to `user_name`
