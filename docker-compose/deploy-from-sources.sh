@@ -58,7 +58,7 @@ fi
 # Build Docker image for SKOOP Server using compiled JAR file.
 JAR_FILE=$(find ./target -type f -iname "skoop-server-*.jar")
 docker build \
-  -t skoop/server:latest \
+  -t tsystemsmms/skoop-server:latest \
   --build-arg JAR_FILE=$JAR_FILE \
   .
 
@@ -108,7 +108,7 @@ fi
 
 # Build Docker image for SKOOP WebApp using compiled distribution.
 docker build \
-  -t skoop/webapp:latest \
+  -t tsystemsmms/skoop-webapp:latest \
   .
 
 if [ "$?" -ne "0" ]; then

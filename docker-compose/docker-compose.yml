@@ -3,7 +3,7 @@ version: '3.4'
 services:
   # SKOOP WebApp
   webapp:
-    image: 'skoop/webapp:latest'
+    image: 'tsystemsmms/skoop-webapp:latest'
     environment:
       SERVER_NAME: '${SERVER_DOMAIN:-localhost}'
       SERVER_ADMIN: '${SERVER_ADMIN:-anonymous@nothing.com}'
@@ -17,7 +17,7 @@ services:
 
   # SKOOP Server
   server:
-    image: 'skoop/server:latest'
+    image: 'tsystemsmms/skoop-server:latest'
     environment:
       SPRING_DATA_NEO4J_URI: 'bolt://database:7687'
       SPRING_DATA_NEO4J_USERNAME: neo4j
