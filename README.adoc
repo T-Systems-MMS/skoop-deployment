@@ -21,6 +21,8 @@ We publish Docker images on https://hub.docker.com/[Docker Hub]:
 * https://hub.docker.com/r/tsystemsmms/skoop-server[the server image]
 * https://hub.docker.com/r/tsystemsmms/skoop-webapp[the webapp image]
 
+To deploy the images:
+
 . Clone this Git repository.
 . Open a terminal in the subdirectory `docker-compose`.
 . Export the environment variable `SERVER_DOMAIN` to define the web domain where the SKOOP WebApp will be hosted. For example: `SERVER_DOMAIN=skoop.your-domain.com`. Default is `localhost`.
