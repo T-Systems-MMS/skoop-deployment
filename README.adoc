@@ -16,7 +16,8 @@ The subdirectory `docker-compose` contains a template to deploy SKOOP using Dock
 
 === Deployment with the images from Docker Hub
 
-We publish Docker images on [Docker Hub](https://hub.docker.com/):
+We publish Docker images on https://hub.docker.com/[Docker Hub]:
+
 * https://hub.docker.com/r/tsystemsmms/skoop-server[the server image]
 * https://hub.docker.com/r/tsystemsmms/skoop-webapp[the webapp image]
 
